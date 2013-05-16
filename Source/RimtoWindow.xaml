@@ -1,0 +1,228 @@
+﻿<Window x:Class="Rimto.RimtoWindow"
+        x:Name="RootWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="clr-namespace:Rimto"
+        Title="Rimto"
+        ResizeMode="NoResize"
+        WindowStyle="SingleBorderWindow"
+        AllowsTransparency="False"
+        Background="Transparent"
+        Visibility="Visible">
+
+    <Window.Resources>
+        <Style TargetType="{x:Type Grid}">
+            <!-- Set True for the layout debug -->
+            <Setter Property="ShowGridLines" Value="False" />
+        </Style>
+        
+        <Storyboard x:Key="StoryboardOpacityAnimation">
+            <DoubleAnimation
+                AutoReverse="True"
+                Storyboard.TargetProperty="Opacity"
+                From="1" To="0.3" Duration="0:0:0.5"/>
+        </Storyboard>
+        
+        <Style TargetType="ListViewItem">
+            <Style.Resources>
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FF3399FF"/>
+                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#FF3399FF"/>                
+            </Style.Resources>
+        </Style>
+        
+        <Style TargetType="{x:Type ScrollBar}">
+            <Setter Property="Stylus.IsFlicksEnabled" Value="True" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Width" Value="7"/>
+            <Setter Property="MinWidth" Value="7" />
+        </Style>
+        
+    </Window.Resources>
+    
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Help"          Executed="ApplicationCommands_Help"         CanExecute="ApplicationCommands_Help_CanExecute" />
+        <CommandBinding Command="ApplicationCommands.New"           Executed="ApplicationCommands_New"          CanExecute="ApplicationCommands_New_CanExecute" />
+        <CommandBinding Command="ApplicationCommands.Open"          Executed="ApplicationCommands_Open"         CanExecute="ApplicationCommands_Open_CanExecute" />
+        <CommandBinding Command="ApplicationCommands.Save"          Executed="ApplicationCommands_Save"         CanExecute="ApplicationCommands_Save_CanExecute" />
+        <CommandBinding Command="ApplicationCommands.SaveAs"        Executed="ApplicationCommands_Save"         CanExecute="ApplicationCommands_Save_CanExecute" />
+        <CommandBinding Command="ApplicationCommands.Close"         Executed="ApplicationCommands_Close"        CanExecute="ApplicationCommands_Close_CanExecute" />
+        <CommandBinding Command="ApplicationCommands.Find"          Executed="NavigationCommands_Search"        CanExecute="NavigationCommands_Search_CanExecute" />
+        <CommandBinding Command="ApplicationCommands.Properties"    Executed="ApplicationCommands_Properties"   CanExecute="ApplicationCommands_Properties_CanExecute" />
+        <CommandBinding Command="ApplicationCommands.Stop"          Executed="ApplicationCommands_Stop"         CanExecute="ApplicationCommands_Stop_CanExecute" />
+        
+        <CommandBinding Command="NavigationCommands.Search"         Executed="NavigationCommands_Search"        CanExecute="NavigationCommands_Search_CanExecute" />
+        <CommandBinding Command="NavigationCommands.Refresh"        Executed="NavigationCommands_Refresh"       CanExecute="NavigationCommands_Refresh_CanExecute" />
+        
+        <CommandBinding Command="MediaCommands.Play"                Executed="MediaCommands_TogglePlayPause"    CanExecute="MediaCommands_TogglePlayPause_CanExecute" />
+        <CommandBinding Command="MediaCommands.Pause"               Executed="MediaCommands_TogglePlayPause"    CanExecute="MediaCommands_TogglePlayPause_CanExecute" />
+        <CommandBinding Command="MediaCommands.TogglePlayPause"     Executed="MediaCommands_TogglePlayPause"    CanExecute="MediaCommands_TogglePlayPause_CanExecute" />
+        <CommandBinding Command="MediaCommands.Stop"                Executed="MediaCommands_TogglePlayPause"    CanExecute="MediaCommands_TogglePlayPause_CanExecute" />
+        <CommandBinding Command="MediaCommands.Rewind"              Executed="MediaCommands_FastForwardRewind"  CanExecute="MediaCommands_FastForwardRewind_CanExecute" />
+        <CommandBinding Command="MediaCommands.FastForward"         Executed="MediaCommands_FastForwardRewind"  CanExecute="MediaCommands_FastForwardRewind_CanExecute" />
+        <CommandBinding Command="MediaCommands.PreviousTrack"       Executed="MediaCommands_TrackControl"       CanExecute="MediaCommands_TrackControl_CanExecute" />
+        <CommandBinding Command="MediaCommands.NextTrack"           Executed="MediaCommands_TrackControl"       CanExecute="MediaCommands_TrackControl_CanExecute" />
+        <CommandBinding Command="MediaCommands.IncreaseVolume"      Executed="MediaCommands_VolumeControl"      CanExecute="MediaCommands_VolumeControl_CanExecute" />
+        <CommandBinding Command="MediaCommands.DecreaseVolume"      Executed="MediaCommands_VolumeControl"      CanExecute="MediaCommands_VolumeControl_CanExecute" />
+        <CommandBinding Command="MediaCommands.MuteVolume"          Executed="MediaCommands_VolumeControl"      CanExecute="MediaCommands_VolumeControl_CanExecute" />
+        
+        <CommandBinding Command="ui:RimtoWindow.RemovePlayListItemCommand"      Executed="ListViewCommands_RemovePlayListItem"      CanExecute="ListViewCommands_RemovePlayListItem_CanExecute" />
+    </Window.CommandBindings>
+    
+    <Window.InputBindings>
+        <KeyBinding Key="F1"    Modifiers=""                Command="ApplicationCommands.Help"          />
+        <KeyBinding Key="N"     Modifiers="Control"         Command="ApplicationCommands.New"           />
+        <KeyBinding Key="O"     Modifiers="Control"         Command="ApplicationCommands.Open"          />
+        <KeyBinding Key="S"     Modifiers="Control"         Command="ApplicationCommands.Save"          />
+        <KeyBinding Key="S"     Modifiers="Control+Shift"   Command="ApplicationCommands.SaveAs"        />
+        <KeyBinding Key="W"     Modifiers="Control"         Command="ApplicationCommands.Close"         />
+        <KeyBinding Key="F"     Modifiers="Control"         Command="ApplicationCommands.Find"          />
+        <KeyBinding Key="Enter" Modifiers="Alt"             Command="ApplicationCommands.Properties"    />
+        <KeyBinding Key="Break" Modifiers="Control"         Command="ApplicationCommands.Stop"          />
+        
+        <KeyBinding Key="F3"    Modifiers=""                Command="NavigationCommands.Search"         />
+        <KeyBinding Key="F5"    Modifiers=""                Command="NavigationCommands.Refresh"        />
+        
+        <KeyBinding Key="P"     Modifiers="Control"         Command="MediaCommands.Play"                />
+        <KeyBinding Key="P"     Modifiers="Control+Shift"   Command="MediaCommands.Pause"               />
+        <KeyBinding Key="Space" Modifiers=""                Command="MediaCommands.TogglePlayPause"     />
+        <KeyBinding Key="K"     Modifiers="Control"         Command="MediaCommands.Stop"                />
+        <KeyBinding Key="Left"  Modifiers="Shift"           Command="MediaCommands.Rewind"              />
+        <KeyBinding Key="Right" Modifiers="Shift"           Command="MediaCommands.FastForward"         />
+        <KeyBinding Key="Left"  Modifiers="Control"         Command="MediaCommands.PreviousTrack"       />
+        <KeyBinding Key="Right" Modifiers="Control"         Command="MediaCommands.NextTrack"           />
+        <KeyBinding Key="Up"    Modifiers="Control"         Command="MediaCommands.IncreaseVolume"      />
+        <KeyBinding Key="Down"  Modifiers="Control"         Command="MediaCommands.DecreaseVolume"      />
+        <KeyBinding Key="M"     Modifiers="Control"         Command="MediaCommands.MuteVolume"          />
+    </Window.InputBindings>
+    
+    <Canvas x:Name="RootCanvas"
+            Width="{Binding ElementName=RootWindow, Path=ActualWidth}"
+            Height="{Binding ElementName=RootWindow, Path=ActualHeight}"
+            Background="Transparent"
+            AllowDrop="True">
+        
+        <Grid Margin="8, 4, 8, 4"
+              Width="{Binding ElementName=RootCanvas, Path=Width}"
+              Height="{Binding ElementName=RootCanvas, Path=Height}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="58" />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition MinHeight="8" Height="8"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
+                <Image x:Name="PlayPauseImage"
+                               Tag="PlayPause"
+                               Width="32" Height="32"
+                               Cursor="Hand"
+                               Source="pack://application:,,,/Resources/play-32x32.png">
+                    <Image.InputBindings>
+                        <MouseBinding Gesture="LeftClick" Command="MediaCommands.TogglePlayPause" />
+                    </Image.InputBindings>
+                    <Image.Triggers>
+                        <EventTrigger RoutedEvent="Label.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource StoryboardOpacityAnimation}" />
+                        </EventTrigger>
+                    </Image.Triggers>
+                </Image>
+                <Separator Width="16" Height="0"/>
+                <Image x:Name="VolumeImage"
+                               Tag="Volume"
+                               Width="32" Height="32"
+                               Cursor="Hand"
+                               Source="pack://application:,,,/Resources/volume-32x32.png">
+                    <Image.InputBindings>
+                    </Image.InputBindings>
+                    <Image.Triggers>
+                        <EventTrigger RoutedEvent="Label.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource StoryboardOpacityAnimation}" />
+                        </EventTrigger>
+                    </Image.Triggers>
+                </Image>
+                
+                <Separator Width="16" Height="0"/>
+                
+                <Image x:Name="AddImage"
+                               Tag="Add"
+                               Width="32" Height="32"
+                               Cursor="Hand"
+                               Source="pack://application:,,,/Resources/add-32x32.png">
+                    <Image.InputBindings>
+                        <MouseBinding Gesture="LeftClick" Command="ApplicationCommands.Open" />
+                    </Image.InputBindings>
+                    <Image.Triggers>
+                        <EventTrigger RoutedEvent="Label.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource StoryboardOpacityAnimation}" />
+                        </EventTrigger>
+                    </Image.Triggers>
+                </Image>
+
+                <Separator Width="16" Height="0"/>
+                
+            </StackPanel>
+
+            <StackPanel x:Name="WindowCaption"
+                        Tag="Caption"
+                        Grid.Row="0" Grid.Column="1"
+                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                        Background="Transparent">
+                <Label x:Name="WindowCaptionLabel"
+                       FontFamily="Verdana"
+                       FontWeight="Medium"
+                       FontSize="12"
+                       Content="">
+                </Label>
+            </StackPanel>
+
+            <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                        HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                        Background="Transparent">
+                <ProgressBar IsIndeterminate="True" Height="4" Orientation="Horizontal" Width="Auto"/>
+            </StackPanel>
+            
+            <StackPanel Grid.Row="2" Grid.Column="2"
+                        HorizontalAlignment="Center" VerticalAlignment="Top"
+                        Background="Transparent">
+                <Expander IsExpanded="False" Expanded="Expander_Expanded" Collapsed="Expander_Collapsed">
+                </Expander>
+            </StackPanel>
+
+            <StackPanel x:Name="PlaylistPanel"
+                        Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3"
+                        Visibility="Collapsed"
+                        Margin="0,0,12,0">
+                <ListView x:Name="PlaylistListView"
+                          Background="Transparent"
+                          BorderBrush="Transparent"
+                          Height="220"
+                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                          ScrollViewer.VerticalScrollBarVisibility="Auto"
+                          SelectionChanged="PlaylistListView_SelectionChanged"
+                          ListViewItem.MouseDoubleClick="ListViewItem_MouseDoubleClick">
+
+                    <ListView.InputBindings>
+                        <KeyBinding Key="Delete" Command="ui:RimtoWindow.RemovePlayListItemCommand" />
+                        <KeyBinding Key="Space" Command="MediaCommands.TogglePlayPause" />
+                    </ListView.InputBindings>
+                    
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Title}"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                   
+                </ListView>
+            </StackPanel>
+
+        </Grid>
+        
+    </Canvas>
+    
+</Window>
